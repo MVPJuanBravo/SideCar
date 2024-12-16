@@ -1,0 +1,2290 @@
+kind: AdaptiveDialog
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent:
+    triggerQueries:
+      - Información Pedido de Compras
+      - Informacion Pedido Compras
+      - Pedido de Compras
+      - Quiero información de un pedido de Compras
+
+  actions:
+    - kind: Question
+      id: question_lQCiZV
+      displayName: Pregunta numero pedido
+      interruptionPolicy:
+        allowInterruption: true
+
+      variable: init:Topic.PreguntaPedido
+      prompt: ¿Qué pedido de Compras deseas consultar?
+      entity: StringPrebuiltEntity
+
+    - kind: SendActivity
+      id: sendActivity_6evzy2
+      displayName: Mensaje informativo
+      activity: "Voy a comprobar la informacion relacionada con el pedido de Compras:  {Topic.PreguntaPedido}, dame unos segundos... "
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_90FA0g
+      displayName: Encabezado Pedido de compras
+      input:
+        binding:
+          $filter: =Concatenate("PurchaseOrderNumber eq '",Topic.PreguntaPedido,"'")
+          $select: PurchaseOrderName,PurchaseOrderStatus,CurrencyCode,RequestedDeliveryDate,ConfirmedDeliveryDate
+          dataset: entorno.sandbox.operations.eu.dynamics.com
+          table: PurchaseOrderHeadersV2
+
+      output:
+        kind: SingleVariableOutputBinding
+        variable: Topic.EncabezadoPedido
+
+      connectionReference: msdyn_fnocopilot.cr.ldkrvu9B
+      connectionProperties:
+        mode: Maker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          value:
+            description: List of Items
+            order: 0
+            type:
+              kind: Table
+              properties:
+                AccountingDate:
+                  displayName: Accounting date
+                  description: The AccountingDate attribute.
+                  visibility: Advanced
+                  order: 19
+                  type: DateTime
+
+                AccountingDistributionTemplateName:
+                  displayName: Template ID
+                  description: The AccountingDistributionTemplateName attribute.
+                  visibility: Advanced
+                  order: 11
+                  type: String
+
+                ArePricesIncludingSalesTax:
+                  displayName: Prices include sales tax
+                  description: The ArePricesIncludingSalesTax attribute.
+                  visibility: Advanced
+                  order: 68
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                AttentionInformation:
+                  displayName: Attention information
+                  description: The AttentionInformation attribute.
+                  visibility: Advanced
+                  order: 100
+                  type: String
+
+                BankDocumentType:
+                  displayName: Bank document type
+                  description: The BankDocumentType attribute.
+                  visibility: Advanced
+                  order: 46
+                  enumValues:
+                    - None
+                    - LetterOfCredit
+                    - ImportCollection
+                    - LetterOfGuarantee
+                  type: String
+
+                BuyerGroupId:
+                  displayName: Buyer group
+                  description: The BuyerGroupId attribute.
+                  visibility: Advanced
+                  order: 59
+                  type: String
+
+                CashDiscountCode:
+                  displayName: Cash discount
+                  description: The CashDiscountCode attribute.
+                  visibility: Advanced
+                  order: 61
+                  type: String
+
+                CashDiscountPercentage:
+                  displayName: Discount percentage
+                  description: The CashDiscountPercentage attribute.
+                  visibility: Advanced
+                  order: 20
+                  type: Number
+
+                ChargeVendorGroupId:
+                  displayName: Charges group
+                  description: The ChargeVendorGroupId attribute.
+                  visibility: Advanced
+                  order: 30
+                  type: String
+
+                ConfirmedDeliveryDate:
+                  displayName: Confirmed receipt date
+                  description: The ConfirmedDeliveryDate attribute.
+                  visibility: Advanced
+                  order: 27
+                  type: DateTime
+
+                ConfirmedShipDate:
+                  displayName: Confirmed ship date
+                  description: The ConfirmedShipDate attribute.
+                  visibility: Advanced
+                  order: 72
+                  type: DateTime
+
+                ConfirmingPurchaseOrderCode:
+                  displayName: Confirming PO
+                  description: The ConfirmingPurchaseOrderCode attribute.
+                  visibility: Advanced
+                  order: 41
+                  type: String
+
+                ConfirmingPurchaseOrderCodeLanguageId:
+                  displayName: Confirming PO language
+                  description: The ConfirmingPurchaseOrderCodeLanguageId attribute.
+                  visibility: Advanced
+                  order: 66
+                  type: String
+
+                ContactPersonId:
+                  displayName: Contact ID
+                  description: The ContactPersonId attribute.
+                  visibility: Advanced
+                  order: 88
+                  type: String
+
+                CurrencyCode:
+                  displayName: Currency
+                  description: The CurrencyCode attribute.
+                  visibility: Advanced
+                  order: 65
+                  type: String
+
+                dataAreaId:
+                  displayName: Company
+                  description: The dataAreaId attribute.
+                  order: 0
+                  type: String
+
+                DefaultLedgerDimensionDisplayValue:
+                  displayName: Financial dimensions
+                  description: The DefaultLedgerDimensionDisplayValue attribute.
+                  visibility: Advanced
+                  order: 98
+                  type: String
+
+                DefaultReceivingSiteId:
+                  displayName: Site
+                  description: The DefaultReceivingSiteId attribute.
+                  visibility: Advanced
+                  order: 111
+                  type: String
+
+                DefaultReceivingWarehouseId:
+                  displayName: Warehouse
+                  description: The DefaultReceivingWarehouseId attribute.
+                  visibility: Advanced
+                  order: 89
+                  type: String
+
+                DeliveryAddressCity:
+                  displayName: City
+                  description: The DeliveryAddressCity attribute.
+                  visibility: Advanced
+                  order: 26
+                  type: String
+
+                DeliveryAddressCountryRegionId:
+                  displayName: Country/region
+                  description: The DeliveryAddressCountryRegionId attribute.
+                  visibility: Advanced
+                  order: 23
+                  type: String
+
+                DeliveryAddressCountryRegionISOCode:
+                  displayName: Country/region ISO
+                  description: The DeliveryAddressCountryRegionISOCode attribute.
+                  visibility: Advanced
+                  order: 60
+                  type: String
+
+                DeliveryAddressCountyId:
+                  displayName: County
+                  description: The DeliveryAddressCountyId attribute.
+                  visibility: Advanced
+                  order: 38
+                  type: String
+
+                DeliveryAddressDescription:
+                  displayName: Name or description
+                  description: The DeliveryAddressDescription attribute.
+                  visibility: Advanced
+                  order: 12
+                  type: String
+
+                DeliveryAddressDistrictName:
+                  displayName: District
+                  description: The DeliveryAddressDistrictName attribute.
+                  visibility: Advanced
+                  order: 35
+                  type: String
+
+                DeliveryAddressDunsNumber:
+                  displayName: DUNS number
+                  description: The DeliveryAddressDunsNumber attribute.
+                  visibility: Advanced
+                  order: 44
+                  type: String
+
+                DeliveryAddressLatitude:
+                  displayName: Latitude
+                  description: The DeliveryAddressLatitude attribute.
+                  visibility: Advanced
+                  order: 24
+                  type: Number
+
+                DeliveryAddressLocationId:
+                  displayName: Location ID
+                  description: The DeliveryAddressLocationId attribute.
+                  visibility: Advanced
+                  order: 69
+                  type: String
+
+                DeliveryAddressLongitude:
+                  displayName: Longitude
+                  description: The DeliveryAddressLongitude attribute.
+                  visibility: Advanced
+                  order: 94
+                  type: Number
+
+                DeliveryAddressName:
+                  displayName: Delivery address name
+                  description: The DeliveryAddressName attribute.
+                  visibility: Advanced
+                  order: 48
+                  type: String
+
+                DeliveryAddressPostBox:
+                  displayName: Post box
+                  description: The DeliveryAddressPostBox attribute.
+                  visibility: Advanced
+                  order: 104
+                  type: String
+
+                DeliveryAddressStateId:
+                  displayName: State
+                  description: The DeliveryAddressStateId attribute.
+                  visibility: Advanced
+                  order: 101
+                  type: String
+
+                DeliveryAddressStreet:
+                  displayName: Street
+                  description: The DeliveryAddressStreet attribute.
+                  visibility: Advanced
+                  order: 77
+                  type: String
+
+                DeliveryAddressStreetNumber:
+                  displayName: Street number
+                  description: The DeliveryAddressStreetNumber attribute.
+                  visibility: Advanced
+                  order: 52
+                  type: String
+
+                DeliveryAddressTimeZone:
+                  displayName: Time zone
+                  description: The DeliveryAddressTimeZone attribute.
+                  visibility: Advanced
+                  order: 99
+                  enumValues:
+                    - GMTMINUS1200INTERNATIONALDATELINEWEST
+                    - GMTMINUS1100COORDINATEDUNIVERSALTIME
+                    - GMTMINUS1100MIDWAYISLAND_SAMOA
+                    - GMTMINUS1000HAWAII
+                    - GMTMINUS0900ALASKA
+                    - GMTMINUS0800PACIFICTIME
+                    - GMTMINUS0800TIJUANA_BAJACALIFORNIA
+                    - GMTMINUS0700ARIZONA
+                    - GMTMINUS0700MOUNTAINTIME
+                    - GMTMINUS0700CHIHUAHUA_LAPAZ_MAZATLAN
+                    - GMTMINUS0600CENTRALAMERICA
+                    - GMTMINUS0600CENTRALTIME
+                    - GMTMINUS0600GUADALAJARA_MEXICOCITY
+                    - GMTMINUS0600SASKATCHEWAN
+                    - GMTMINUS0500BOGOTA_LIMA_QUITO_RIOBRANCO
+                    - GMTMINUS0500EASTERNTIME
+                    - GMTMINUS0500INDIANA
+                    - GMTMINUS0500CHETUMAL
+                    - GMTMINUS0400ASUNCION
+                    - GMTMINUS0400ATLANTICTIME
+                    - GMTMINUS0400LAPAZ
+                    - GMTMINUS0400MANAUS
+                    - GMTMINUS0300SANTIAGO
+                    - GMTMINUS0430CARACAS
+                    - GMTMINUS0330NEWFOUNDLAND
+                    - GMTMINUS0300_SALVADOR
+                    - GMTMINUS0300BRASILIA
+                    - GMTMINUS0300BUENOSAIRES
+                    - GMTMINUS0300BUENOSAIRES_GEORGETOWN
+                    - GMTMINUS0300GREENLAND
+                    - GMTMINUS0300MONTEVIDEO
+                    - GMTMINUS0200MIDATLANTIC
+                    - GMTMINUS0100AZORES
+                    - GMTMINUS0100CAPEVERDIS
+                    - GMT_CASABLANCA
+                    - GMT_CASABLANCA_MONTROVIA_REYKJAVIK
+                    - GMT_COORDINATEDUNIVERSALTIME
+                    - GMT_DUBLIN_EDINBURGH_LISBON_LONDON
+                    - GMT_PLUS0300KALININGRAD_MINSK
+                    - GMTPLUS0100_AMSTERDAM_BERLIN_BERN_ROME
+                    - GMTPLUS0100BELGRADE_BRATISLAVA_BUDAPEST
+                    - GMTPLUS0100BRUSSELS_COPENHAGEN_MADRID
+                    - GMTPLUS0100SARAJEVO_SKOPJE_WARSAW_ZAGREB
+                    - GMTPLUS0100TRIPOLI
+                    - GMTPLUS0100WESTCENTRALAFRICA
+                    - GMTPLUS0200_DAMASCUS
+                    - GMTPLUS0200AMMAN
+                    - GMTPLUS0200ATHENS_BUCHAREST_ISTANBUL
+                    - GMTPLUS0200BEIRUT
+                    - GMTPLUS0200MINSK
+                    - GMTPLUS0200CAIRO
+                    - GMTPLUS0200HARARE_PRETORIA
+                    - GMTPLUS0200HELSINKI_KYIV_RIGA_VILNIUS
+                    - GMTPLUS0300ISTANBUL
+                    - GMTPLUS0200JERUSALEM
+                    - GMTPLUS0200WINDHOEK
+                    - GMTPLUS0300BAGHDAD
+                    - GMTPLUS0300KUWAIT_RIYADH
+                    - GMTPLUS0300MOSCOW_STPETERSBURG_VOLGOGRAD
+                    - GMTPLUS0300NAIROBI
+                    - GMTPLUS0300TBILISI
+                    - GMTPLUS0330TEHRAN
+                    - GMTPLUS0400ABUDHABI_MUSCAT
+                    - GMTPLUS0400BAKU
+                    - GMTPLUS0400IZHEVSK_SAMARA
+                    - GMTPLUS0400CAUCASUSSTANDARDTIME
+                    - GMTPLUS0400PORTLOUIS
+                    - GMTPLUS0400YEREVAN
+                    - GMTPLUS0430KABUL
+                    - GMTPLUS0500EKATERINBURG
+                    - GMTPLUS0500ISLAMABAD_KARACHI
+                    - GMTPLUS0500ISLAMABAD_KARACHI_TASHKENT
+                    - GMTPLUS0530CHENNAI_KOLKATA_MUMBAI
+                    - GMTPLUS0530SRIJAYAWARDENEPURA
+                    - GMTPLUS0545KATHMANDU
+                    - GMTPLUS0600ALMATY_NOVOSIBIRSK
+                    - GMTPLUS0600ASTANA_DHAKA
+                    - GMTPLUS0600DHAKA
+                    - GMTPLUS0600MAGADAN
+                    - GMTPLUS0630_YANGON
+                    - GMTPLUS0700_BANGKOK_HANOI_JAKARTA
+                    - GMTPLUS0700KRASNOYARSK
+                    - GMTPLUS0800_ULAANBAATAR
+                    - GMTPLUS0800BEIJING_CHONGQING_HONGKONG
+                    - GMTPLUS0800IRKUTSK_ULAANBATAAR
+                    - GMTPLUS0800KUALALUMPUR_SINGAPORE
+                    - GMTPLUS0800PERTH
+                    - GMTPLUS0800TAIPEI
+                    - GMTPLUS0900OSAKA_SAPPORO_TOKYO
+                    - GMTPLUS0900SEOUL
+                    - GMTPLUS0900YAKUTSK
+                    - GMTPLUS0930ADELAIDE
+                    - GMTPLUS0930DARWIN
+                    - GMTPLUS1000BRISBANE
+                    - GMTPLUS1000CANBERRA_MELBOURNE_SYDNEY
+                    - GMTPLUS1000GUAM_PORTMORESBY
+                    - GMTPLUS1000HOBART
+                    - GMTPLUS1000VLADIVOSTOK
+                    - GMTPLUS1100CHOKURDAKH
+                    - GMTPLUS1100MAGADAN_SOLOMONIS
+                    - GMTPLUS1200ANADYR_PETRO_KAMCHATSKY
+                    - GMTPLUS1200AUCKLAND_WELLINGTON
+                    - GMTPLUS1200COORDINATEDUNIVERSALTIME
+                    - GMTPLUS1200FIJI_KAMCHATKA_MARSHALLIS
+                    - GMTPLUS1300NUKU_ALOFA
+                  type: String
+
+                DeliveryAddressZipCode:
+                  displayName: ZIP/postal code
+                  description: The DeliveryAddressZipCode attribute.
+                  visibility: Advanced
+                  order: 39
+                  type: String
+
+                DeliveryBuildingCompliment:
+                  displayName: Building complement
+                  description: The DeliveryBuildingCompliment attribute.
+                  visibility: Advanced
+                  order: 102
+                  type: String
+
+                DeliveryCityInKana:
+                  displayName: City in Kana
+                  description: The DeliveryCityInKana attribute.
+                  visibility: Advanced
+                  order: 14
+                  type: String
+
+                DeliveryModeId:
+                  displayName: Mode of delivery
+                  description: The DeliveryModeId attribute.
+                  visibility: Advanced
+                  order: 5
+                  type: String
+
+                DeliveryStreetInKana:
+                  displayName: Street in Kana
+                  description: The DeliveryStreetInKana attribute.
+                  visibility: Advanced
+                  order: 15
+                  type: String
+
+                DeliveryTermsId:
+                  displayName: Delivery terms
+                  description: The DeliveryTermsId attribute.
+                  visibility: Advanced
+                  order: 45
+                  type: String
+
+                DocumentApprovalStatus:
+                  displayName: Approval status
+                  description: The DocumentApprovalStatus attribute.
+                  visibility: Advanced
+                  order: 95
+                  enumValues:
+                    - Draft
+                    - InReview
+                    - Rejected
+                    - Approved
+                    - InExternalReview
+                    - Finalized
+                    - Confirmed
+                  type: String
+
+                Email:
+                  displayName: Email
+                  description: The Email attribute.
+                  visibility: Advanced
+                  order: 8
+                  type: String
+
+                EUSalesListCode:
+                  displayName: List code
+                  description: The EUSalesListCode attribute.
+                  visibility: Advanced
+                  order: 90
+                  enumValues:
+                    - IncludeNot
+                    - EUTrade
+                    - ProductionOnToll
+                    - TriangularEUTrade
+                    - TriangularProductionOnToll
+                    - PropertyMoving_CZ
+                    - TriangularIntermediateRole_HU
+                    - DEL_EUService
+                    - PurchasedOnBehalf_LV
+                  type: String
+
+                ExpectedCrossDockingDate:
+                  displayName: Cross docking date
+                  description: The ExpectedCrossDockingDate attribute.
+                  visibility: Advanced
+                  order: 54
+                  type: DateTime
+
+                ExpectedStoreAvailableSalesDate:
+                  displayName: Sales date
+                  description: The ExpectedStoreAvailableSalesDate attribute.
+                  visibility: Advanced
+                  order: 3
+                  type: DateTime
+
+                ExpectedStoreReceiptDate:
+                  displayName: Local delivery date
+                  description: The ExpectedStoreReceiptDate attribute.
+                  visibility: Advanced
+                  order: 47
+                  type: DateTime
+
+                FinTagDisplayValue:
+                  displayName: Financial tag display value
+                  description: The FinTagDisplayValue attribute.
+                  visibility: Advanced
+                  order: 107
+                  type: String
+
+                FiscalDocumentOperationTypeId:
+                  displayName: Operation type
+                  description: The FiscalDocumentOperationTypeId attribute.
+                  visibility: Advanced
+                  order: 2
+                  type: String
+
+                FixedDueDate:
+                  displayName: Due date
+                  description: The FixedDueDate attribute.
+                  visibility: Advanced
+                  order: 80
+                  type: DateTime
+
+                FormattedDeliveryAddress:
+                  displayName: Address
+                  description: The FormattedDeliveryAddress attribute.
+                  visibility: Advanced
+                  order: 115
+                  type: String
+
+                FormattedInvoiceAddress:
+                  displayName: Address
+                  description: The FormattedInvoiceAddress attribute.
+                  visibility: Advanced
+                  order: 58
+                  type: String
+
+                GSTSelfBilledInvoiceApprovalNumber:
+                  displayName: Approval number
+                  description: The GSTSelfBilledInvoiceApprovalNumber attribute.
+                  visibility: Advanced
+                  order: 70
+                  type: String
+
+                ImportDeclarationNumber:
+                  displayName: Import declaration number
+                  description: The ImportDeclarationNumber attribute.
+                  visibility: Advanced
+                  order: 91
+                  type: String
+
+                IntrastatPortId:
+                  displayName: Port
+                  description: The IntrastatPortId attribute.
+                  visibility: Advanced
+                  order: 106
+                  type: String
+
+                IntrastatStatisticsProcedureCode:
+                  displayName: Statistics procedure
+                  description: The IntrastatStatisticsProcedureCode attribute.
+                  visibility: Advanced
+                  order: 74
+                  type: String
+
+                IntrastatTransactionCode:
+                  displayName: Transaction code
+                  description: The IntrastatTransactionCode attribute.
+                  visibility: Advanced
+                  order: 63
+                  type: String
+
+                IntrastatTransportModeCode:
+                  displayName: Transport
+                  description: The IntrastatTransportModeCode attribute.
+                  visibility: Advanced
+                  order: 103
+                  type: String
+
+                InvoiceAddressCity:
+                  displayName: City
+                  description: The InvoiceAddressCity attribute.
+                  visibility: Advanced
+                  order: 86
+                  type: String
+
+                InvoiceAddressCountryRegionId:
+                  displayName: Country/region
+                  description: The InvoiceAddressCountryRegionId attribute.
+                  visibility: Advanced
+                  order: 49
+                  type: String
+
+                InvoiceAddressCounty:
+                  displayName: County
+                  description: The InvoiceAddressCounty attribute.
+                  visibility: Advanced
+                  order: 29
+                  type: String
+
+                InvoiceAddressState:
+                  displayName: State
+                  description: The InvoiceAddressState attribute.
+                  visibility: Advanced
+                  order: 110
+                  type: String
+
+                InvoiceAddressStreet:
+                  displayName: Street
+                  description: The InvoiceAddressStreet attribute.
+                  visibility: Advanced
+                  order: 6
+                  type: String
+
+                InvoiceAddressStreetNumber:
+                  displayName: Street number
+                  description: The InvoiceAddressStreetNumber attribute.
+                  visibility: Advanced
+                  order: 55
+                  type: String
+
+                InvoiceAddressZipCode:
+                  displayName: ZIP/postal code
+                  description: The InvoiceAddressZipCode attribute.
+                  visibility: Advanced
+                  order: 96
+                  type: String
+
+                InvoiceType:
+                  displayName: Invoice type
+                  description: The InvoiceType attribute.
+                  visibility: Advanced
+                  order: 67
+                  enumValues:
+                    - Invoice
+                    - GST
+                    - SelfBilled
+                    - ServiceInvoice
+                  type: String
+
+                InvoiceVendorAccountNumber:
+                  displayName: Invoice account
+                  description: The InvoiceVendorAccountNumber attribute.
+                  visibility: Advanced
+                  order: 75
+                  type: String
+
+                IsChangeManagementActive:
+                  displayName: Activate change management
+                  description: The IsChangeManagementActive attribute.
+                  visibility: Advanced
+                  order: 10
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsConsolidatedInvoiceTarget:
+                  displayName: Target of consolidation
+                  description: The IsConsolidatedInvoiceTarget attribute.
+                  visibility: Advanced
+                  order: 40
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeliveredDirectly:
+                  displayName: Direct delivery
+                  description: The IsDeliveredDirectly attribute.
+                  visibility: Advanced
+                  order: 71
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeliveryAddressOrderSpecific:
+                  displayName: One time delivery address
+                  description: The IsDeliveryAddressOrderSpecific attribute.
+                  visibility: Advanced
+                  order: 83
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeliveryAddressPrivate:
+                  displayName: Is delivery address private
+                  description: The IsDeliveryAddressPrivate attribute.
+                  visibility: Advanced
+                  order: 56
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsOneTimeVendor:
+                  displayName: One-time supplier
+                  description: The IsOneTimeVendor attribute.
+                  visibility: Advanced
+                  order: 105
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                LanguageId:
+                  displayName: Language
+                  description: The LanguageId attribute.
+                  visibility: Advanced
+                  order: 42
+                  type: String
+
+                LineDiscountVendorGroupCode:
+                  displayName: Line discount group
+                  description: The LineDiscountVendorGroupCode attribute.
+                  visibility: Advanced
+                  order: 112
+                  type: String
+
+                MultilineDiscountVendorGroupCode:
+                  displayName: Multiline disc. group
+                  description: The MultilineDiscountVendorGroupCode attribute.
+                  visibility: Advanced
+                  order: 25
+                  type: String
+
+                NumberSequenceGroupId:
+                  displayName: Number sequence group
+                  description: The NumberSequenceGroupId attribute.
+                  visibility: Advanced
+                  order: 17
+                  type: String
+
+                OrdererPersonnelNumber:
+                  displayName: Orderer
+                  description: The OrdererPersonnelNumber attribute.
+                  visibility: Advanced
+                  order: 108
+                  type: String
+
+                OrderVendorAccountNumber:
+                  displayName: Vendor account
+                  description: The OrderVendorAccountNumber attribute.
+                  isRequired: true
+                  order: 7
+                  type: String
+
+                OverrideSalesTax:
+                  displayName: Override sales tax
+                  description: The OverrideSalesTax attribute.
+                  visibility: Advanced
+                  order: 76
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                PaymentScheduleName:
+                  displayName: Payment schedule
+                  description: The PaymentScheduleName attribute.
+                  visibility: Advanced
+                  order: 62
+                  type: String
+
+                PaymentTermsName:
+                  displayName: Terms of payment
+                  description: The PaymentTermsName attribute.
+                  visibility: Advanced
+                  order: 93
+                  type: String
+
+                PriceVendorGroupCode:
+                  displayName: Price group
+                  description: The PriceVendorGroupCode attribute.
+                  visibility: Advanced
+                  order: 36
+                  type: String
+
+                ProjectId:
+                  displayName: Project ID
+                  description: The ProjectId attribute.
+                  visibility: Advanced
+                  order: 32
+                  type: String
+
+                PurchaseOrderHeaderCreationMethod:
+                  displayName: Origin
+                  description: The PurchaseOrderHeaderCreationMethod attribute.
+                  visibility: Advanced
+                  order: 37
+                  enumValues:
+                    - Purchase
+                    - Consignment
+                  type: String
+
+                PurchaseOrderName:
+                  displayName: Vendor name
+                  description: The PurchaseOrderName attribute.
+                  visibility: Advanced
+                  order: 21
+                  type: String
+
+                PurchaseOrderNumber:
+                  displayName: Purchase order
+                  description: The PurchaseOrderNumber attribute.
+                  order: 1
+                  type: String
+
+                PurchaseOrderPoolId:
+                  displayName: Pool
+                  description: The PurchaseOrderPoolId attribute.
+                  visibility: Advanced
+                  order: 51
+                  type: String
+
+                PurchaseOrderStatus:
+                  displayName: Purchase order status
+                  description: The PurchaseOrderStatus attribute.
+                  visibility: Advanced
+                  order: 92
+                  enumValues:
+                    - None
+                    - Backorder
+                    - Received
+                    - Invoiced
+                    - Canceled
+                  type: String
+
+                PurchaseRebateVendorGroupId:
+                  displayName: Vendor rebate group
+                  description: The PurchaseRebateVendorGroupId attribute.
+                  visibility: Advanced
+                  order: 28
+                  type: String
+
+                ReasonCode:
+                  displayName: Reason code
+                  description: The ReasonCode attribute.
+                  visibility: Advanced
+                  order: 43
+                  type: String
+
+                ReasonComment:
+                  displayName: Reason comment
+                  description: The ReasonComment attribute.
+                  visibility: Advanced
+                  order: 16
+                  type: String
+
+                ReplenishmentServiceCategoryId:
+                  displayName: Service category
+                  description: The ReplenishmentServiceCategoryId attribute.
+                  visibility: Advanced
+                  order: 50
+                  type: String
+
+                ReplenishmentWarehouseId:
+                  displayName: Location
+                  description: The ReplenishmentWarehouseId attribute.
+                  visibility: Advanced
+                  order: 79
+                  type: String
+
+                RequestedDeliveryDate:
+                  displayName: Requested receipt date
+                  description: The RequestedDeliveryDate attribute.
+                  visibility: Advanced
+                  order: 22
+                  type: DateTime
+
+                RequestedShipDate:
+                  displayName: Requested ship date
+                  description: The RequestedShipDate attribute.
+                  visibility: Advanced
+                  order: 53
+                  type: DateTime
+
+                RequesterPersonnelNumber:
+                  displayName: Requester
+                  description: The RequesterPersonnelNumber attribute.
+                  visibility: Advanced
+                  order: 31
+                  type: String
+
+                SalesTaxGroupCode:
+                  displayName: Sales tax group
+                  description: The SalesTaxGroupCode attribute.
+                  visibility: Advanced
+                  order: 82
+                  type: String
+
+                ShipCalendarId:
+                  displayName: Ship calendar
+                  description: The ShipCalendarId attribute.
+                  visibility: Advanced
+                  order: 73
+                  type: String
+
+                ShippingCarrierId:
+                  displayName: Shipping carrier
+                  description: The ShippingCarrierId attribute.
+                  visibility: Advanced
+                  order: 33
+                  type: String
+
+                ShippingCarrierServiceGroupId:
+                  displayName: Carrier group
+                  description: The ShippingCarrierServiceGroupId attribute.
+                  visibility: Advanced
+                  order: 87
+                  type: String
+
+                ShippingCarrierServiceId:
+                  displayName: Carrier service
+                  description: The ShippingCarrierServiceId attribute.
+                  visibility: Advanced
+                  order: 97
+                  type: String
+
+                TaxExemptNumber:
+                  displayName: Tax exempt number
+                  description: The TaxExemptNumber attribute.
+                  visibility: Advanced
+                  order: 57
+                  type: String
+
+                TotalDiscountPercentage:
+                  displayName: Total discount %
+                  description: The TotalDiscountPercentage attribute.
+                  visibility: Advanced
+                  order: 34
+                  type: Number
+
+                TotalDiscountVendorGroupCode:
+                  displayName: Total discount group
+                  description: The TotalDiscountVendorGroupCode attribute.
+                  visibility: Advanced
+                  order: 116
+                  type: String
+
+                TradeEndCustomerAccount:
+                  displayName: Customer account
+                  description: The TradeEndCustomerAccount attribute.
+                  visibility: Advanced
+                  order: 117
+                  type: String
+
+                TransportationDocumentLineId:
+                  displayName: GUID
+                  description: The TransportationDocumentLineId attribute.
+                  visibility: Advanced
+                  order: 81
+                  type: String
+
+                TransportationModeId:
+                  displayName: Mode
+                  description: The TransportationModeId attribute.
+                  visibility: Advanced
+                  order: 9
+                  type: String
+
+                TransportationRoutePlanId:
+                  displayName: Route plan
+                  description: The TransportationRoutePlanId attribute.
+                  visibility: Advanced
+                  order: 113
+                  type: String
+
+                TransportationTemplateId:
+                  displayName: Transportation template ID
+                  description: The TransportationTemplateId attribute.
+                  visibility: Advanced
+                  order: 18
+                  type: String
+
+                URL:
+                  displayName: Internet address
+                  description: The URL attribute.
+                  visibility: Advanced
+                  order: 64
+                  type: String
+
+                VendorInvoiceDeclarationId:
+                  displayName: Invoice declaration
+                  description: The VendorInvoiceDeclarationId attribute.
+                  visibility: Advanced
+                  order: 4
+                  type: String
+
+                VendorOrderReference:
+                  displayName: Customer reference
+                  description: The VendorOrderReference attribute.
+                  visibility: Advanced
+                  order: 78
+                  type: String
+
+                VendorPaymentMethodName:
+                  displayName: Method of payment
+                  description: The VendorPaymentMethodName attribute.
+                  visibility: Advanced
+                  order: 109
+                  type: String
+
+                VendorPaymentMethodSpecificationName:
+                  displayName: Payment specification
+                  description: The VendorPaymentMethodSpecificationName attribute.
+                  visibility: Advanced
+                  order: 85
+                  type: String
+
+                VendorPostingProfileId:
+                  displayName: Posting profile
+                  description: The VendorPostingProfileId attribute.
+                  visibility: Advanced
+                  order: 84
+                  type: String
+
+                VendorTransactionSettlementType:
+                  displayName: Settlement type
+                  description: The VendorTransactionSettlementType attribute.
+                  visibility: Advanced
+                  order: 13
+                  enumValues:
+                    - None
+                    - OpenTransact
+                    - SelectedTransact
+                  type: String
+
+                ZakatContractNumber:
+                  displayName: Contract number
+                  description: The ZakatContractNumber attribute.
+                  visibility: Advanced
+                  order: 114
+                  type: String
+
+      operationId: GetItems
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_oAu29x
+      displayName: Lineas pedido de Compras
+      input:
+        binding:
+          $filter: =Concatenate("PurchaseOrderNumber eq '",Topic.PreguntaPedido,"'")
+          $select: ItemNumber, OrderedPurchaseQuantity,PurchasePrice,PurchaseOrderLineStatus
+          dataset: entorno.sandbox.operations.eu.dynamics.com
+          table: PurchaseOrderLinesV2
+
+      output:
+        kind: SingleVariableOutputBinding
+        variable: Topic.LineasPedido
+
+      connectionReference: msdyn_fnocopilot.cr.tzToR9eU
+      connectionProperties:
+        mode: Maker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          value:
+            description: List of Items
+            order: 0
+            type:
+              kind: Table
+              properties:
+                AccountingDistributionTemplateName:
+                  displayName: Template ID
+                  description: The AccountingDistributionTemplateName attribute.
+                  visibility: Advanced
+                  order: 12
+                  type: String
+
+                AllowedOverdeliveryPercentage:
+                  displayName: Overdelivery
+                  description: The AllowedOverdeliveryPercentage attribute.
+                  visibility: Advanced
+                  order: 109
+                  type: Number
+
+                AllowedUnderdeliveryPercentage:
+                  displayName: Underdelivery
+                  description: The AllowedUnderdeliveryPercentage attribute.
+                  visibility: Advanced
+                  order: 108
+                  type: Number
+
+                Barcode:
+                  displayName: Bar code
+                  description: The Barcode attribute.
+                  visibility: Advanced
+                  order: 25
+                  type: String
+
+                BarCodeSetupId:
+                  displayName: Bar code setup
+                  description: The BarCodeSetupId attribute.
+                  visibility: Advanced
+                  order: 130
+                  type: String
+
+                BOMId:
+                  displayName: Sub-BOM
+                  description: The BOMId attribute.
+                  visibility: Advanced
+                  order: 64
+                  type: String
+
+                BudgetReservationDocumentNumber:
+                  displayName: Document number
+                  description: The BudgetReservationDocumentNumber attribute.
+                  visibility: Advanced
+                  order: 116
+                  type: String
+
+                BudgetReservationLineNumber:
+                  displayName: Line number
+                  description: The BudgetReservationLineNumber attribute.
+                  visibility: Advanced
+                  order: 63
+                  type: Number
+
+                CalculateLineAmount:
+                  displayName: Calculate Line Amount
+                  description: The CalculateLineAmount attribute.
+                  visibility: Advanced
+                  order: 77
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                CatchWeightUnitSymbol:
+                  displayName: CW unit
+                  description: The CatchWeightUnitSymbol attribute.
+                  visibility: Advanced
+                  order: 74
+                  type: String
+
+                CFOPCode:
+                  displayName: CFOP
+                  description: The CFOPCode attribute.
+                  visibility: Advanced
+                  order: 118
+                  type: String
+
+                ConfirmedDeliveryDate:
+                  displayName: Confirmed receipt date
+                  description: The ConfirmedDeliveryDate attribute.
+                  visibility: Advanced
+                  order: 41
+                  type: DateTime
+
+                ConfirmedShippingDate:
+                  displayName: Confirmed ship date
+                  description: The ConfirmedShippingDate attribute.
+                  visibility: Advanced
+                  order: 93
+                  type: DateTime
+
+                CustomerReference:
+                  displayName: Customer reference
+                  description: The CustomerReference attribute.
+                  visibility: Advanced
+                  order: 94
+                  type: String
+
+                CustomerRequisitionNumber:
+                  displayName: Customer requisition
+                  description: The CustomerRequisitionNumber attribute.
+                  visibility: Advanced
+                  order: 99
+                  type: String
+
+                dataAreaId:
+                  displayName: Company
+                  description: The dataAreaId attribute.
+                  order: 0
+                  type: String
+
+                DefaultLedgerDimensionDisplayValue:
+                  displayName: Financial dimensions
+                  description: The DefaultLedgerDimensionDisplayValue attribute.
+                  visibility: Advanced
+                  order: 114
+                  type: String
+
+                DeliveryAddressCity:
+                  displayName: City
+                  description: The DeliveryAddressCity attribute.
+                  visibility: Advanced
+                  order: 40
+                  type: String
+
+                DeliveryAddressCountryRegionId:
+                  displayName: Country/region
+                  description: The DeliveryAddressCountryRegionId attribute.
+                  visibility: Advanced
+                  order: 37
+                  type: String
+
+                DeliveryAddressCountryRegionISOCode:
+                  displayName: Country/region ISO
+                  description: The DeliveryAddressCountryRegionISOCode attribute.
+                  visibility: Advanced
+                  order: 75
+                  type: String
+
+                DeliveryAddressCountyId:
+                  displayName: County
+                  description: The DeliveryAddressCountyId attribute.
+                  visibility: Advanced
+                  order: 50
+                  type: String
+
+                DeliveryAddressDescription:
+                  displayName: Name or description
+                  description: The DeliveryAddressDescription attribute.
+                  visibility: Advanced
+                  order: 14
+                  type: String
+
+                DeliveryAddressDistrictName:
+                  displayName: District
+                  description: The DeliveryAddressDistrictName attribute.
+                  visibility: Advanced
+                  order: 49
+                  type: String
+
+                DeliveryAddressDunsNumber:
+                  displayName: DUNS number
+                  description: The DeliveryAddressDunsNumber attribute.
+                  visibility: Advanced
+                  order: 57
+                  type: String
+
+                DeliveryAddressLatitude:
+                  displayName: Latitude
+                  description: The DeliveryAddressLatitude attribute.
+                  visibility: Advanced
+                  order: 38
+                  type: Number
+
+                DeliveryAddressLocationId:
+                  displayName: Location ID
+                  description: The DeliveryAddressLocationId attribute.
+                  visibility: Advanced
+                  order: 81
+                  type: String
+
+                DeliveryAddressLongitude:
+                  displayName: Longitude
+                  description: The DeliveryAddressLongitude attribute.
+                  visibility: Advanced
+                  order: 110
+                  type: Number
+
+                DeliveryAddressName:
+                  displayName: Delivery address name
+                  description: The DeliveryAddressName attribute.
+                  visibility: Advanced
+                  order: 61
+                  type: String
+
+                DeliveryAddressPostBox:
+                  displayName: Post box
+                  description: The DeliveryAddressPostBox attribute.
+                  visibility: Advanced
+                  order: 123
+                  type: String
+
+                DeliveryAddressStateId:
+                  displayName: State
+                  description: The DeliveryAddressStateId attribute.
+                  visibility: Advanced
+                  order: 119
+                  type: String
+
+                DeliveryAddressStreet:
+                  displayName: Street
+                  description: The DeliveryAddressStreet attribute.
+                  visibility: Advanced
+                  order: 92
+                  type: String
+
+                DeliveryAddressStreetNumber:
+                  displayName: Street number
+                  description: The DeliveryAddressStreetNumber attribute.
+                  visibility: Advanced
+                  order: 66
+                  type: String
+
+                DeliveryAddressTimeZone:
+                  displayName: Time zone
+                  description: The DeliveryAddressTimeZone attribute.
+                  visibility: Advanced
+                  order: 115
+                  enumValues:
+                    - GMTMINUS1200INTERNATIONALDATELINEWEST
+                    - GMTMINUS1100COORDINATEDUNIVERSALTIME
+                    - GMTMINUS1100MIDWAYISLAND_SAMOA
+                    - GMTMINUS1000HAWAII
+                    - GMTMINUS0900ALASKA
+                    - GMTMINUS0800PACIFICTIME
+                    - GMTMINUS0800TIJUANA_BAJACALIFORNIA
+                    - GMTMINUS0700ARIZONA
+                    - GMTMINUS0700MOUNTAINTIME
+                    - GMTMINUS0700CHIHUAHUA_LAPAZ_MAZATLAN
+                    - GMTMINUS0600CENTRALAMERICA
+                    - GMTMINUS0600CENTRALTIME
+                    - GMTMINUS0600GUADALAJARA_MEXICOCITY
+                    - GMTMINUS0600SASKATCHEWAN
+                    - GMTMINUS0500BOGOTA_LIMA_QUITO_RIOBRANCO
+                    - GMTMINUS0500EASTERNTIME
+                    - GMTMINUS0500INDIANA
+                    - GMTMINUS0500CHETUMAL
+                    - GMTMINUS0400ASUNCION
+                    - GMTMINUS0400ATLANTICTIME
+                    - GMTMINUS0400LAPAZ
+                    - GMTMINUS0400MANAUS
+                    - GMTMINUS0300SANTIAGO
+                    - GMTMINUS0430CARACAS
+                    - GMTMINUS0330NEWFOUNDLAND
+                    - GMTMINUS0300_SALVADOR
+                    - GMTMINUS0300BRASILIA
+                    - GMTMINUS0300BUENOSAIRES
+                    - GMTMINUS0300BUENOSAIRES_GEORGETOWN
+                    - GMTMINUS0300GREENLAND
+                    - GMTMINUS0300MONTEVIDEO
+                    - GMTMINUS0200MIDATLANTIC
+                    - GMTMINUS0100AZORES
+                    - GMTMINUS0100CAPEVERDIS
+                    - GMT_CASABLANCA
+                    - GMT_CASABLANCA_MONTROVIA_REYKJAVIK
+                    - GMT_COORDINATEDUNIVERSALTIME
+                    - GMT_DUBLIN_EDINBURGH_LISBON_LONDON
+                    - GMT_PLUS0300KALININGRAD_MINSK
+                    - GMTPLUS0100_AMSTERDAM_BERLIN_BERN_ROME
+                    - GMTPLUS0100BELGRADE_BRATISLAVA_BUDAPEST
+                    - GMTPLUS0100BRUSSELS_COPENHAGEN_MADRID
+                    - GMTPLUS0100SARAJEVO_SKOPJE_WARSAW_ZAGREB
+                    - GMTPLUS0100TRIPOLI
+                    - GMTPLUS0100WESTCENTRALAFRICA
+                    - GMTPLUS0200_DAMASCUS
+                    - GMTPLUS0200AMMAN
+                    - GMTPLUS0200ATHENS_BUCHAREST_ISTANBUL
+                    - GMTPLUS0200BEIRUT
+                    - GMTPLUS0200MINSK
+                    - GMTPLUS0200CAIRO
+                    - GMTPLUS0200HARARE_PRETORIA
+                    - GMTPLUS0200HELSINKI_KYIV_RIGA_VILNIUS
+                    - GMTPLUS0300ISTANBUL
+                    - GMTPLUS0200JERUSALEM
+                    - GMTPLUS0200WINDHOEK
+                    - GMTPLUS0300BAGHDAD
+                    - GMTPLUS0300KUWAIT_RIYADH
+                    - GMTPLUS0300MOSCOW_STPETERSBURG_VOLGOGRAD
+                    - GMTPLUS0300NAIROBI
+                    - GMTPLUS0300TBILISI
+                    - GMTPLUS0330TEHRAN
+                    - GMTPLUS0400ABUDHABI_MUSCAT
+                    - GMTPLUS0400BAKU
+                    - GMTPLUS0400IZHEVSK_SAMARA
+                    - GMTPLUS0400CAUCASUSSTANDARDTIME
+                    - GMTPLUS0400PORTLOUIS
+                    - GMTPLUS0400YEREVAN
+                    - GMTPLUS0430KABUL
+                    - GMTPLUS0500EKATERINBURG
+                    - GMTPLUS0500ISLAMABAD_KARACHI
+                    - GMTPLUS0500ISLAMABAD_KARACHI_TASHKENT
+                    - GMTPLUS0530CHENNAI_KOLKATA_MUMBAI
+                    - GMTPLUS0530SRIJAYAWARDENEPURA
+                    - GMTPLUS0545KATHMANDU
+                    - GMTPLUS0600ALMATY_NOVOSIBIRSK
+                    - GMTPLUS0600ASTANA_DHAKA
+                    - GMTPLUS0600DHAKA
+                    - GMTPLUS0600MAGADAN
+                    - GMTPLUS0630_YANGON
+                    - GMTPLUS0700_BANGKOK_HANOI_JAKARTA
+                    - GMTPLUS0700KRASNOYARSK
+                    - GMTPLUS0800_ULAANBAATAR
+                    - GMTPLUS0800BEIJING_CHONGQING_HONGKONG
+                    - GMTPLUS0800IRKUTSK_ULAANBATAAR
+                    - GMTPLUS0800KUALALUMPUR_SINGAPORE
+                    - GMTPLUS0800PERTH
+                    - GMTPLUS0800TAIPEI
+                    - GMTPLUS0900OSAKA_SAPPORO_TOKYO
+                    - GMTPLUS0900SEOUL
+                    - GMTPLUS0900YAKUTSK
+                    - GMTPLUS0930ADELAIDE
+                    - GMTPLUS0930DARWIN
+                    - GMTPLUS1000BRISBANE
+                    - GMTPLUS1000CANBERRA_MELBOURNE_SYDNEY
+                    - GMTPLUS1000GUAM_PORTMORESBY
+                    - GMTPLUS1000HOBART
+                    - GMTPLUS1000VLADIVOSTOK
+                    - GMTPLUS1100CHOKURDAKH
+                    - GMTPLUS1100MAGADAN_SOLOMONIS
+                    - GMTPLUS1200ANADYR_PETRO_KAMCHATSKY
+                    - GMTPLUS1200AUCKLAND_WELLINGTON
+                    - GMTPLUS1200COORDINATEDUNIVERSALTIME
+                    - GMTPLUS1200FIJI_KAMCHATKA_MARSHALLIS
+                    - GMTPLUS1300NUKU_ALOFA
+                  type: String
+
+                DeliveryAddressZipCode:
+                  displayName: ZIP/postal code
+                  description: The DeliveryAddressZipCode attribute.
+                  visibility: Advanced
+                  order: 54
+                  type: String
+
+                DeliveryBuildingCompliment:
+                  displayName: Building complement
+                  description: The DeliveryBuildingCompliment attribute.
+                  visibility: Advanced
+                  order: 120
+                  type: String
+
+                DeliveryCityInKana:
+                  displayName: City in Kana
+                  description: The DeliveryCityInKana attribute.
+                  visibility: Advanced
+                  order: 17
+                  type: String
+
+                DeliveryStreetInKana:
+                  displayName: Street in Kana
+                  description: The DeliveryStreetInKana attribute.
+                  visibility: Advanced
+                  order: 19
+                  type: String
+
+                DIOTOperationType:
+                  displayName: Type of operation
+                  description: The DIOTOperationType attribute.
+                  visibility: Advanced
+                  order: 104
+                  enumValues:
+                    - Blank
+                    - ProServices
+                    - RentLease
+                    - Other
+                  type: String
+
+                DlvMode:
+                  displayName: Mode of delivery
+                  description: The DlvMode attribute.
+                  visibility: Advanced
+                  order: 142
+                  type: String
+
+                DlvTerm:
+                  displayName: Delivery terms
+                  description: The DlvTerm attribute.
+                  visibility: Advanced
+                  order: 143
+                  type: String
+
+                ExternalItemNumber:
+                  displayName: External item number
+                  description: The ExternalItemNumber attribute.
+                  visibility: Advanced
+                  order: 138
+                  type: String
+
+                FinTagDisplayValue:
+                  displayName: Financial tag display value
+                  description: The FinTagDisplayValue attribute.
+                  visibility: Advanced
+                  order: 129
+                  type: String
+
+                FixedAssetGroupId:
+                  displayName: Fixed asset group
+                  description: The FixedAssetGroupId attribute.
+                  visibility: Advanced
+                  order: 111
+                  type: String
+
+                FixedAssetNumber:
+                  displayName: Fixed asset number
+                  description: The FixedAssetNumber attribute.
+                  visibility: Advanced
+                  order: 5
+                  type: String
+
+                FixedAssetTransactionType:
+                  displayName: Transaction type
+                  description: The FixedAssetTransactionType attribute.
+                  visibility: Advanced
+                  order: 65
+                  enumValues:
+                    - Acquisition
+                    - AcquisitionAdj
+                    - PreAcquisition_CZ
+                  type: String
+
+                FixedAssetValueModelId:
+                  displayName: Book
+                  description: The FixedAssetValueModelId attribute.
+                  visibility: Advanced
+                  order: 105
+                  type: String
+
+                FixedPriceCharges:
+                  displayName: Charges on purchases
+                  description: The FixedPriceCharges attribute.
+                  visibility: Advanced
+                  order: 53
+                  type: Number
+
+                FormattedDelveryAddress:
+                  displayName: FormattedDelveryAddress
+                  description: The FormattedDelveryAddress attribute.
+                  visibility: Advanced
+                  order: 10
+                  type: String
+
+                GSTHSTTaxType:
+                  displayName: GST/HST
+                  description: The GSTHSTTaxType attribute.
+                  visibility: Advanced
+                  order: 91
+                  enumValues:
+                    - None
+                    - Rebates111
+                    - TaxOnAcquisition205
+                    - SelfAssessment405
+                  type: String
+
+                IntrastatCommodityCode:
+                  displayName: Commodity
+                  description: The IntrastatCommodityCode attribute.
+                  visibility: Advanced
+                  order: 113
+                  type: String
+
+                IntrastatPortId:
+                  displayName: Port
+                  description: The IntrastatPortId attribute.
+                  visibility: Advanced
+                  order: 126
+                  type: String
+
+                IntrastatSpecialMovementCode:
+                  displayName: Special movement
+                  description: The IntrastatSpecialMovementCode attribute.
+                  visibility: Advanced
+                  order: 127
+                  type: String
+
+                IntrastatStatisticsProcedureCode:
+                  displayName: Statistics procedure
+                  description: The IntrastatStatisticsProcedureCode attribute.
+                  visibility: Advanced
+                  order: 88
+                  type: String
+
+                IntrastatStatisticValue:
+                  displayName: Statistical value
+                  description: The IntrastatStatisticValue attribute.
+                  visibility: Advanced
+                  order: 141
+                  type: Number
+
+                IntrastatTransactionCode:
+                  displayName: Transaction code
+                  description: The IntrastatTransactionCode attribute.
+                  visibility: Advanced
+                  order: 80
+                  type: String
+
+                IntrastatTransportModeCode:
+                  displayName: Transport
+                  description: The IntrastatTransportModeCode attribute.
+                  visibility: Advanced
+                  order: 121
+                  type: String
+
+                InventoryLotId:
+                  displayName: Lot ID
+                  description: The InventoryLotId attribute.
+                  visibility: Advanced
+                  order: 95
+                  type: String
+
+                IsAddedByChannel:
+                  displayName: Added by POS receiving
+                  description: The IsAddedByChannel attribute.
+                  visibility: Advanced
+                  order: 58
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeleted:
+                  displayName: Deleted
+                  description: The IsDeleted attribute.
+                  visibility: Advanced
+                  order: 44
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeliveryAddressOrderSpecific:
+                  displayName: One time delivery address
+                  description: The IsDeliveryAddressOrderSpecific attribute.
+                  visibility: Advanced
+                  order: 98
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsDeliveryAddressPrivate:
+                  displayName: Is delivery address private
+                  description: The IsDeliveryAddressPrivate attribute.
+                  visibility: Advanced
+                  order: 69
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsIntrastatTriangularDeal:
+                  displayName: Triangular deal
+                  description: The IsIntrastatTriangularDeal attribute.
+                  visibility: Advanced
+                  order: 30
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsLineStopped:
+                  displayName: Stopped
+                  description: The IsLineStopped attribute.
+                  visibility: Advanced
+                  order: 140
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsNewFixedAsset:
+                  displayName: New fixed asset?
+                  description: The IsNewFixedAsset attribute.
+                  visibility: Advanced
+                  order: 26
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsPartialDeliveryPrevented:
+                  displayName: Prevent partial delivery
+                  description: The IsPartialDeliveryPrevented attribute.
+                  visibility: Advanced
+                  order: 32
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsProjectPayWhenPaid:
+                  displayName: Pay when paid
+                  description: The IsProjectPayWhenPaid attribute.
+                  visibility: Advanced
+                  order: 139
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsTax1099GTradeOrBusinessIncome:
+                  displayName: G-8 trade or business income
+                  description: The IsTax1099GTradeOrBusinessIncome attribute.
+                  visibility: Advanced
+                  order: 47
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                IsTax1099SPropertyOrServices:
+                  displayName: S-4 transferor received property or services
+                  description: The IsTax1099SPropertyOrServices attribute.
+                  visibility: Advanced
+                  order: 22
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                ItemBatchNumber:
+                  displayName: Batch number
+                  description: The ItemBatchNumber attribute.
+                  visibility: Advanced
+                  order: 36
+                  type: String
+
+                ItemNumber:
+                  displayName: Item number
+                  description: The ItemNumber attribute.
+                  visibility: Advanced
+                  order: 13
+                  type: String
+
+                ItemSerialNumber:
+                  displayName: Serial number
+                  description: The ItemSerialNumber attribute.
+                  visibility: Advanced
+                  order: 76
+                  type: String
+
+                ItemWithholdingTaxGroupCode:
+                  displayName: Item withholding tax group
+                  description: The ItemWithholdingTaxGroupCode attribute.
+                  visibility: Advanced
+                  order: 71
+                  type: String
+
+                LineAmount:
+                  displayName: Net amount
+                  description: The LineAmount attribute.
+                  visibility: Advanced
+                  order: 124
+                  type: Number
+
+                LineDescription:
+                  displayName: Text
+                  description: The LineDescription attribute.
+                  visibility: Advanced
+                  order: 90
+                  type: String
+
+                LineDiscountAmount:
+                  displayName: Discount
+                  description: The LineDiscountAmount attribute.
+                  visibility: Advanced
+                  order: 20
+                  type: Number
+
+                LineDiscountPercentage:
+                  displayName: Discount percent
+                  description: The LineDiscountPercentage attribute.
+                  visibility: Advanced
+                  order: 103
+                  type: Number
+
+                LineNumber:
+                  displayName: Line number
+                  description: The LineNumber attribute.
+                  isRequired: true
+                  order: 2
+                  type: Number
+
+                MainAccountIdDisplayValue:
+                  displayName: Ledger account
+                  description: The MainAccountIdDisplayValue attribute.
+                  visibility: Advanced
+                  order: 72
+                  type: String
+
+                MultilineDiscountAmount:
+                  displayName: Multiline discount
+                  description: The MultilineDiscountAmount attribute.
+                  visibility: Advanced
+                  order: 33
+                  type: Number
+
+                MultilineDiscountPercentage:
+                  displayName: Multiline discount percentage
+                  description: The MultilineDiscountPercentage attribute.
+                  visibility: Advanced
+                  order: 15
+                  type: Number
+
+                NGPCode:
+                  displayName: NGP
+                  description: The NGPCode attribute.
+                  visibility: Advanced
+                  order: 68
+                  type: Number
+
+                OrderedCatchWeightQuantity:
+                  displayName: CW quantity
+                  description: The OrderedCatchWeightQuantity attribute.
+                  visibility: Advanced
+                  order: 106
+                  type: Number
+
+                OrderedInventoryStatusId:
+                  displayName: Inventory status
+                  description: The OrderedInventoryStatusId attribute.
+                  visibility: Advanced
+                  order: 73
+                  type: String
+
+                OrderedPurchaseQuantity:
+                  displayName: Quantity
+                  description: The OrderedPurchaseQuantity attribute.
+                  visibility: Advanced
+                  order: 9
+                  type: Number
+
+                OriginCountryRegionId:
+                  displayName: Country/region of origin
+                  description: The OriginCountryRegionId attribute.
+                  visibility: Advanced
+                  order: 125
+                  type: String
+
+                OriginStateId:
+                  displayName: State of origin
+                  description: The OriginStateId attribute.
+                  visibility: Advanced
+                  order: 70
+                  type: String
+
+                OverrideSalesTax:
+                  displayName: Override sales tax
+                  description: The OverrideSalesTax attribute.
+                  visibility: Advanced
+                  order: 89
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                PlanningPriority:
+                  displayName: Planning priority
+                  description: The PlanningPriority attribute.
+                  visibility: Advanced
+                  order: 101
+                  type: Number
+
+                ProcurementProductCategoryName:
+                  displayName: Procurement category
+                  description: The ProcurementProductCategoryName attribute.
+                  visibility: Advanced
+                  order: 3
+                  type: String
+
+                ProductColorId:
+                  displayName: Color
+                  description: The ProductColorId attribute.
+                  visibility: Advanced
+                  order: 117
+                  type: String
+
+                ProductConfigurationId:
+                  displayName: Configuration
+                  description: The ProductConfigurationId attribute.
+                  visibility: Advanced
+                  order: 27
+                  type: String
+
+                ProductSizeId:
+                  displayName: Size
+                  description: The ProductSizeId attribute.
+                  visibility: Advanced
+                  order: 52
+                  type: String
+
+                ProductStyleId:
+                  displayName: Style
+                  description: The ProductStyleId attribute.
+                  visibility: Advanced
+                  order: 21
+                  type: String
+
+                ProductVersionId:
+                  displayName: Version
+                  description: The ProductVersionId attribute.
+                  visibility: Advanced
+                  order: 85
+                  type: String
+
+                ProjectActivityNumber:
+                  displayName: Activity number
+                  description: The ProjectActivityNumber attribute.
+                  visibility: Advanced
+                  order: 82
+                  type: String
+
+                ProjectCategoryId:
+                  displayName: Project category
+                  description: The ProjectCategoryId attribute.
+                  visibility: Advanced
+                  order: 11
+                  type: String
+
+                ProjectId:
+                  displayName: Project ID
+                  description: The ProjectId attribute.
+                  visibility: Advanced
+                  order: 46
+                  type: String
+
+                ProjectLinePropertyId:
+                  displayName: Line property
+                  description: The ProjectLinePropertyId attribute.
+                  visibility: Advanced
+                  order: 48
+                  type: String
+
+                ProjectSalesCurrencyCode:
+                  displayName: Sales currency
+                  description: The ProjectSalesCurrencyCode attribute.
+                  visibility: Advanced
+                  order: 79
+                  type: String
+
+                ProjectSalesPrice:
+                  displayName: Sales price
+                  description: The ProjectSalesPrice attribute.
+                  visibility: Advanced
+                  order: 133
+                  type: Number
+
+                ProjectSalesUnitSymbol:
+                  displayName: Sales unit
+                  description: The ProjectSalesUnitSymbol attribute.
+                  visibility: Advanced
+                  order: 8
+                  type: String
+
+                ProjectTaxGroupCode:
+                  displayName: Project sales tax group
+                  description: The ProjectTaxGroupCode attribute.
+                  visibility: Advanced
+                  order: 23
+                  type: String
+
+                ProjectTaxItemGroupCode:
+                  displayName: Project item sales tax group
+                  description: The ProjectTaxItemGroupCode attribute.
+                  visibility: Advanced
+                  order: 24
+                  type: String
+
+                ProjectWorkerPersonnelNumber:
+                  displayName: Personnel number
+                  description: The ProjectWorkerPersonnelNumber attribute.
+                  visibility: Advanced
+                  order: 107
+                  type: String
+
+                PurchaseOrderLineCreationMethod:
+                  displayName: Origin
+                  description: The PurchaseOrderLineCreationMethod attribute.
+                  visibility: Advanced
+                  order: 135
+                  enumValues:
+                    - Purchase
+                    - Consignment
+                  type: String
+
+                PurchaseOrderLineStatus:
+                  displayName: Line status
+                  description: The PurchaseOrderLineStatus attribute.
+                  visibility: Advanced
+                  order: 112
+                  enumValues:
+                    - None
+                    - Backorder
+                    - Received
+                    - Invoiced
+                    - Canceled
+                  type: String
+
+                PurchaseOrderNumber:
+                  displayName: Purchase order
+                  description: The PurchaseOrderNumber attribute.
+                  isRequired: true
+                  order: 1
+                  type: String
+
+                PurchasePrice:
+                  displayName: Unit price
+                  description: The PurchasePrice attribute.
+                  visibility: Advanced
+                  order: 100
+                  type: Number
+
+                PurchasePriceQuantity:
+                  displayName: Price unit
+                  description: The PurchasePriceQuantity attribute.
+                  visibility: Advanced
+                  order: 59
+                  type: Number
+
+                PurchaseRebateVendorGroupId:
+                  displayName: Vendor rebate item group
+                  description: The PurchaseRebateVendorGroupId attribute.
+                  visibility: Advanced
+                  order: 43
+                  type: String
+
+                PurchaseRequisitionId:
+                  displayName: Purchase requisition
+                  description: The PurchaseRequisitionId attribute.
+                  visibility: Advanced
+                  order: 16
+                  type: String
+
+                PurchaseUnitSymbol:
+                  displayName: Unit
+                  description: The PurchaseUnitSymbol attribute.
+                  visibility: Advanced
+                  order: 42
+                  type: String
+
+                ReceivingSiteId:
+                  displayName: Site
+                  description: The ReceivingSiteId attribute.
+                  visibility: Advanced
+                  order: 78
+                  type: String
+
+                ReceivingWarehouseId:
+                  displayName: Warehouse
+                  description: The ReceivingWarehouseId attribute.
+                  visibility: Advanced
+                  order: 39
+                  type: String
+
+                ReceivingWarehouseLocationId:
+                  displayName: Location
+                  description: The ReceivingWarehouseLocationId attribute.
+                  visibility: Advanced
+                  order: 67
+                  type: String
+
+                RequestedDeliveryDate:
+                  displayName: Requested receipt date
+                  description: The RequestedDeliveryDate attribute.
+                  visibility: Advanced
+                  order: 35
+                  type: DateTime
+
+                RequestedShippingDate:
+                  displayName: Requested ship date
+                  description: The RequestedShippingDate attribute.
+                  visibility: Advanced
+                  order: 134
+                  type: DateTime
+
+                RequesterPersonnelNumber:
+                  displayName: Requester
+                  description: The RequesterPersonnelNumber attribute.
+                  visibility: Advanced
+                  order: 45
+                  type: String
+
+                RetailProductVariantNumber:
+                  displayName: Variant number
+                  description: The RetailProductVariantNumber attribute.
+                  visibility: Advanced
+                  order: 18
+                  type: String
+
+                RouteId:
+                  displayName: Subroute
+                  description: The RouteId attribute.
+                  visibility: Advanced
+                  order: 84
+                  type: String
+
+                SalesTaxGroupCode:
+                  displayName: Sales tax group
+                  description: The SalesTaxGroupCode attribute.
+                  visibility: Advanced
+                  order: 97
+                  type: String
+
+                SalesTaxItemGroupCode:
+                  displayName: Item sales tax group
+                  description: The SalesTaxItemGroupCode attribute.
+                  visibility: Advanced
+                  order: 83
+                  type: String
+
+                ServiceFiscalInformationCode:
+                  displayName: Service code
+                  description: The ServiceFiscalInformationCode attribute.
+                  visibility: Advanced
+                  order: 60
+                  type: String
+
+                ShipCalendarId:
+                  displayName: Ship calendar
+                  description: The ShipCalendarId attribute.
+                  visibility: Advanced
+                  order: 86
+                  type: String
+
+                SkipCreateAutoCharges:
+                  displayName: Skip charges
+                  description: The SkipCreateAutoCharges attribute.
+                  visibility: Advanced
+                  order: 137
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                Tax1099Amount:
+                  displayName: 1099 amount
+                  description: The Tax1099Amount attribute.
+                  visibility: Advanced
+                  order: 128
+                  type: Number
+
+                Tax1099BoxId:
+                  displayName: 1099 box
+                  description: The Tax1099BoxId attribute.
+                  visibility: Advanced
+                  order: 62
+                  type: String
+
+                Tax1099GStateTaxWithheldAmount:
+                  displayName: G-11 state income tax withheld
+                  description: The Tax1099GStateTaxWithheldAmount attribute.
+                  visibility: Advanced
+                  order: 87
+                  type: Number
+
+                Tax1099GTaxYear:
+                  displayName: G-3 1099 amount is for tax year
+                  description: The Tax1099GTaxYear attribute.
+                  visibility: Advanced
+                  order: 6
+                  type: Number
+
+                Tax1099GVendorStateId:
+                  displayName: G-10a state
+                  description: The Tax1099GVendorStateId attribute.
+                  visibility: Advanced
+                  order: 28
+                  type: String
+
+                Tax1099GVendorStateTaxId:
+                  displayName: G-10b state identification number
+                  description: The Tax1099GVendorStateTaxId attribute.
+                  visibility: Advanced
+                  order: 132
+                  type: String
+
+                Tax1099SAddressOrLegalDescription:
+                  displayName: S-3 address or legal description
+                  description: The Tax1099SAddressOrLegalDescription attribute.
+                  visibility: Advanced
+                  order: 4
+                  type: String
+
+                Tax1099SBuyerPartOfRealEstateTaxAmount:
+                  displayName: S-6 buyer part of real estate tax
+                  description: The Tax1099SBuyerPartOfRealEstateTaxAmount attribute.
+                  visibility: Advanced
+                  order: 51
+                  type: Number
+
+                Tax1099SClosingDate:
+                  displayName: S-1 date of closing
+                  description: The Tax1099SClosingDate attribute.
+                  visibility: Advanced
+                  order: 56
+                  type: DateTime
+
+                Tax1099StateAmount:
+                  displayName: 1099 state amount
+                  description: The Tax1099StateAmount attribute.
+                  visibility: Advanced
+                  order: 122
+                  type: Number
+
+                Tax1099StateId:
+                  displayName: State/province
+                  description: The Tax1099StateId attribute.
+                  visibility: Advanced
+                  order: 31
+                  type: String
+
+                Tax1099Type:
+                  displayName: Type of Tax 1099 form
+                  description: The Tax1099Type attribute.
+                  visibility: Advanced
+                  order: 34
+                  enumValues:
+                    - F1099DIV
+                    - F1099INT
+                    - F1099MISC
+                    - F1099OID
+                    - F1099G
+                    - F1099S
+                    - F1099NEC
+                  type: String
+
+                UnitWeight:
+                  displayName: Unit weight
+                  description: The UnitWeight attribute.
+                  visibility: Advanced
+                  order: 55
+                  type: Number
+
+                VendorInvoiceMatchingPolicy:
+                  displayName: Matching policy
+                  description: The VendorInvoiceMatchingPolicy attribute.
+                  visibility: Advanced
+                  order: 131
+                  enumValues:
+                    - ThreeWayMatch
+                    - TwoWayMatch
+                    - NoMatch
+                  type: String
+
+                VendorRetentionTermRuleDescription:
+                  displayName: Vendor retention term description
+                  description: The VendorRetentionTermRuleDescription attribute.
+                  visibility: Advanced
+                  order: 7
+                  type: String
+
+                VendorRetentionTermRuleId:
+                  displayName: Vendor retention term
+                  description: The VendorRetentionTermRuleId attribute.
+                  visibility: Advanced
+                  order: 96
+                  type: String
+
+                WillProductReceivingCrossDockProducts:
+                  displayName: Cross docking
+                  description: The WillProductReceivingCrossDockProducts attribute.
+                  visibility: Advanced
+                  order: 102
+                  enumValues:
+                    - No
+                    - Yes
+                  type: String
+
+                WithholdingTaxGroupCode:
+                  displayName: Withholding tax group
+                  description: The WithholdingTaxGroupCode attribute.
+                  visibility: Advanced
+                  order: 136
+                  type: String
+
+                WorkflowState:
+                  displayName: State
+                  description: The WorkflowState attribute.
+                  visibility: Advanced
+                  order: 29
+                  enumValues:
+                    - NotSubmitted
+                    - Submitted
+                    - PendingApproval
+                    - PendingCompletion
+                    - Returned
+                    - ChangeRequest
+                    - Completed
+                    - Approved
+                  type: String
+
+      operationId: GetItems
+
+    - kind: SearchAndSummarizeContent
+      id: 238FB6
+      userInput: =Topic.PreguntaPedido
+      moderationLevel: High
+      additionalInstructions: Proporciona una respuesta en forma de sumario con las siguientes informaciones {Topic.EncabezadoPedido} y además agrega el detalle de las lineas del pedido en formato de tabla {Topic.LineasPedido} intenta que en general la respuesta sea lo más conversional posible y no supere las 15 lineas de respuesta
+
+    - kind: EndDialog
+      id: Eu7oxz
