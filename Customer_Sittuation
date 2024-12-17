@@ -1,0 +1,354 @@
+kind: AdaptiveDialog
+modelDescription: |-
+  ¿cuál es el la situación del cliente?
+  ¿el cliente tiene saldos pendientes?
+  situación de credito de un cliente
+  ¿cual es la deuda actual?
+  ¿Cuál es el estado financiero actual del cliente?
+beginDialog:
+  kind: OnRecognizedIntent
+  id: main
+  intent: {}
+  actions:
+    - kind: ConditionGroup
+      id: conditionGroup_UFt2TH
+      conditions:
+        - id: conditionItem_FPJPk1
+          condition: =System.User.Language = Locale.Spanish
+          actions:
+            - kind: Question
+              id: beVzTR
+              interruptionPolicy:
+                allowInterruption: true
+
+              variable: init:Topic.Cliente
+              prompt: ¿De qué cliente desear consultar?
+              entity: StringPrebuiltEntity
+
+      elseActions:
+        - kind: Question
+          id: kMAkZ1
+          interruptionPolicy:
+            allowInterruption: true
+
+          variable: Topic.Cliente
+          prompt: What customer do you want to review?
+          entity: StringPrebuiltEntity
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_Yq0A3h
+      displayName: CustAgedBalances
+      input:
+        binding:
+          $filter: =Concatenate("CustAccount eq '",Topic.Cliente,"'")
+          dataset: Entorno.sandbox.operations.eu.dynamics.com
+          table: CustAgedBalances
+
+      output:
+        binding:
+          value: Topic.AgedBalance
+
+      connectionReference: msdyn_fnocopilot.shared_dynamicsax.21a8d5cef6e44d0d910e98eadc9fc609
+      connectionProperties:
+        mode: Maker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          value:
+            description: List of Items
+            order: 0
+            type:
+              kind: Table
+              properties:
+                AgedBy:
+                  displayName: Criteria
+                  description: The AgedBy attribute.
+                  visibility: Advanced
+                  order: 13
+                  enumValues:
+                    - TransactionDate
+                    - DueDate
+                    - DocumentDate
+                  type: String
+
+                AgingDate:
+                  displayName: Aging as of
+                  description: The AgingDate attribute.
+                  visibility: Advanced
+                  order: 7
+                  type: DateTime
+
+                AgingPeriod1:
+                  displayName: Aging period 1 balance
+                  description: The AgingPeriod1 attribute.
+                  visibility: Advanced
+                  order: 17
+                  type: Number
+
+                AgingPeriod1ReportingCurrency:
+                  displayName: Aging period 1 balance reporting currency
+                  description: The AgingPeriod1ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 16
+                  type: Number
+
+                AgingPeriod2:
+                  displayName: Aging period 2 balance
+                  description: The AgingPeriod2 attribute.
+                  visibility: Advanced
+                  order: 26
+                  type: Number
+
+                AgingPeriod2ReportingCurrency:
+                  displayName: Aging period 2 balance reporting currency
+                  description: The AgingPeriod2ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 29
+                  type: Number
+
+                AgingPeriod3:
+                  displayName: Aging period 3 balance
+                  description: The AgingPeriod3 attribute.
+                  visibility: Advanced
+                  order: 12
+                  type: Number
+
+                AgingPeriod3ReportingCurrency:
+                  displayName: Aging period 3 balance reporting currency
+                  description: The AgingPeriod3ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 8
+                  type: Number
+
+                AgingPeriod4:
+                  displayName: Aging period 4 balance
+                  description: The AgingPeriod4 attribute.
+                  visibility: Advanced
+                  order: 14
+                  type: Number
+
+                AgingPeriod4ReportingCurrency:
+                  displayName: Aging period 4 balance reporting currency
+                  description: The AgingPeriod4ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 5
+                  type: Number
+
+                AgingPeriod5:
+                  displayName: Aging period 5 balance
+                  description: The AgingPeriod5 attribute.
+                  visibility: Advanced
+                  order: 30
+                  type: Number
+
+                AgingPeriod5ReportingCurrency:
+                  displayName: Aging period 5 balance reporting currency
+                  description: The AgingPeriod5ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 10
+                  type: Number
+
+                AgingPeriod6:
+                  displayName: Aging period 6 balance
+                  description: The AgingPeriod6 attribute.
+                  visibility: Advanced
+                  order: 9
+                  type: Number
+
+                AgingPeriod6ReportingCurrency:
+                  displayName: Aging period 6 balance reporting currency
+                  description: The AgingPeriod6ReportingCurrency attribute.
+                  visibility: Advanced
+                  order: 18
+                  type: Number
+
+                AgingPeriodDefinition:
+                  displayName: Aging period definition
+                  description: The AgingPeriodDefinition attribute.
+                  order: 1
+                  type: String
+
+                AgingPeriodLabel1:
+                  displayName: AgingPeriodLabel1
+                  description: The AgingPeriodLabel1 attribute.
+                  visibility: Advanced
+                  order: 25
+                  type: String
+
+                AgingPeriodLabel2:
+                  displayName: AgingPeriodLabel2
+                  description: The AgingPeriodLabel2 attribute.
+                  visibility: Advanced
+                  order: 23
+                  type: String
+
+                AgingPeriodLabel3:
+                  displayName: AgingPeriodLabel3
+                  description: The AgingPeriodLabel3 attribute.
+                  visibility: Advanced
+                  order: 24
+                  type: String
+
+                AgingPeriodLabel4:
+                  displayName: AgingPeriodLabel4
+                  description: The AgingPeriodLabel4 attribute.
+                  visibility: Advanced
+                  order: 20
+                  type: String
+
+                AgingPeriodLabel5:
+                  displayName: AgingPeriodLabel5
+                  description: The AgingPeriodLabel5 attribute.
+                  visibility: Advanced
+                  order: 22
+                  type: String
+
+                AgingPeriodLabel6:
+                  displayName: AgingPeriodLabel6
+                  description: The AgingPeriodLabel6 attribute.
+                  visibility: Advanced
+                  order: 19
+                  type: String
+
+                Company:
+                  displayName: Company
+                  description: The Company attribute.
+                  order: 3
+                  type: String
+
+                CustAccount:
+                  displayName: Customer account
+                  description: The CustAccount attribute.
+                  order: 2
+                  type: String
+
+                CustName:
+                  displayName: Name
+                  description: The CustName attribute.
+                  visibility: Advanced
+                  order: 6
+                  type: String
+
+                dataAreaId:
+                  displayName: Company
+                  description: The dataAreaId attribute.
+                  order: 0
+                  type: String
+
+                FirstNonzeroBalancePeriod:
+                  displayName: First nonzero balance aging period
+                  description: The FirstNonzeroBalancePeriod attribute.
+                  visibility: Advanced
+                  order: 28
+                  type: Number
+
+                LastPaymentAmount:
+                  displayName: Payment amount
+                  description: The LastPaymentAmount attribute.
+                  visibility: Advanced
+                  order: 15
+                  type: Number
+
+                LastPaymentDate:
+                  displayName: Last payment
+                  description: The LastPaymentDate attribute.
+                  visibility: Advanced
+                  order: 21
+                  type: DateTime
+
+                MSTCurrency:
+                  displayName: Currency
+                  description: The MSTCurrency attribute.
+                  visibility: Advanced
+                  order: 27
+                  type: String
+
+                NumOpenInvoices:
+                  displayName: Number of open invoices
+                  description: The NumOpenInvoices attribute.
+                  visibility: Advanced
+                  order: 11
+                  type: Number
+
+                SumOfAmountDueMst:
+                  displayName: Amount due balance
+                  description: The SumOfAmountDueMst attribute.
+                  visibility: Advanced
+                  order: 4
+                  type: Number
+
+      operationId: GetItems
+
+    - kind: InvokeConnectorAction
+      id: invokeConnectorAction_e0oUEh
+      displayName: CustBalanceStats
+      input:
+        binding:
+          $filter: =Concatenate("CustAccount eq '",Topic.Cliente,"'")
+          dataset: Entorno.sandbox.operations.eu.dynamics.com
+          table: CustBalanceStats
+
+      output:
+        binding:
+          value: Topic.Cliente_Stats
+
+      connectionReference: msdyn_fnocopilot.shared_dynamicsax.21a8d5cef6e44d0d910e98eadc9fc609
+      connectionProperties:
+        mode: Maker
+
+      dynamicOutputSchema:
+        kind: Record
+        properties:
+          value:
+            description: List of Items
+            order: 0
+            type:
+              kind: Table
+              properties:
+                Balance:
+                  displayName: Balance
+                  description: The Balance attribute.
+                  visibility: Advanced
+                  order: 5
+                  type: Number
+
+                BalanceDate:
+                  displayName: Balance date
+                  description: The BalanceDate attribute.
+                  order: 2
+                  type: DateTime
+
+                CreditLimit:
+                  displayName: Credit limit
+                  description: The CreditLimit attribute.
+                  visibility: Advanced
+                  order: 3
+                  type: Number
+
+                CustAccount:
+                  displayName: Customer account
+                  description: The CustAccount attribute.
+                  isRequired: true
+                  order: 1
+                  type: String
+
+                dataAreaId:
+                  displayName: Company
+                  description: The dataAreaId attribute.
+                  order: 0
+                  type: String
+
+                Exposure:
+                  displayName: Exposure
+                  description: The Exposure attribute.
+                  visibility: Advanced
+                  order: 4
+                  type: Number
+
+      operationId: GetItems
+
+    - kind: SearchAndSummarizeContent
+      id: UQ6juc
+      userInput: =Topic.Cliente
+      additionalInstructions: "Genera una respuesta sumarizada utilizando este idioma: {System.User.Language} con la siguiente informacion {Topic.AgedBalance} asegura que la respiuesta tenga al menos unas 5 lineas de contenido, al final incluye información relativa a este resultado: {Topic.Cliente_Stats} considerando solo el registro más reciente."
